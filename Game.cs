@@ -75,17 +75,18 @@ class Game
                 }
             }
         void PrintBoard(string[,] arr_display, int x)
-        {
+        {   
+            string pad = new String(' ', 13);
             //we'll use it before the Uncover function to print current state of board
-            //let's later try and space the words out neatly - longest word is 13 chars long
-            Console.WriteLine( x + " tries left");
-            Console.WriteLine("\t1\t2\t3\t4");
+            //let's try and space the words out neatly - longest word in our base is 13 chars long
+            Console.WriteLine( " " + x + " tries left");
+            Console.WriteLine(" \t1" + pad + "2" + pad + "3" + pad + "4");
             for(int i=0; i<arr_display.GetLength(0); i++)
             {
                 Console.Write(((char)(i+65))+ "\t");
                 for(int j=0; j<arr_display.GetLength(1); j++)
                 {
-                    Console.Write(arr_display[i,j]  + "\t");
+                    Console.Write(arr_display[i,j].PadRight(14));
                 }
                 Console.Write(Environment.NewLine);
             }
@@ -93,6 +94,7 @@ class Game
         }
         void Uncover(string[,] arr_display, string[,] arr, int t)
         {   
+            string pad = new String(' ', 13);
             int bsize=arr_display.Length;
             Console.WriteLine("Please input coordinates of the first word to uncover");
             string coord1 = Console.ReadLine();
@@ -103,18 +105,18 @@ class Game
             }
             Tuple<int, int> numc1 = NumCoord(coord1);           
             Console.Clear();
-            Console.WriteLine( t + " tries left");
-            Console.WriteLine("\t1\t2\t3\t4");
+            Console.WriteLine(" " + t + " tries left");
+            Console.WriteLine("  \t1" + pad + "2" + pad + "3" + pad + "4");
             for(int i=0; i<arr_display.GetLength(0); i++)
             {
-                Console.Write(((char)(i+65))+ "\t");
+                Console.Write(" " + ((char)(i+65))+ "\t");
                 for(int j=0; j<arr_display.GetLength(1); j++)
                 {
                     if(i==numc1.Item1 && j==numc1.Item2)
                     {
-                        Console.Write(arr[i,j]+ "\t");
+                        Console.Write(arr[i,j].PadRight(14));
                     }
-                    else Console.Write(arr_display[i,j]  + "\t");
+                    else Console.Write(arr_display[i,j].PadRight(14));
                 }
                 Console.Write(Environment.NewLine);
             }
@@ -129,18 +131,18 @@ class Game
             }
             Tuple<int, int> numc2 = NumCoord(coord2);
             Console.Clear();
-            Console.WriteLine( t + "tries left");
-            Console.WriteLine("\t1\t2\t3\t4");
+            Console.WriteLine(" " + t + " tries left");
+            Console.WriteLine("  \t1" + pad + "2" + pad + "3" + pad + "4");
             for(int i=0; i<arr_display.GetLength(0); i++)
             {
-                Console.Write(((char)(i+65))+ "\t");
+                Console.Write(" " + ((char)(i+65)) + "\t");
                 for(int j=0; j<arr_display.GetLength(1); j++)
                 {
                     if((i==numc1.Item1 && j==numc1.Item2) || (i==numc2.Item1 && j==numc2.Item2))
                     {
-                        Console.Write(arr[i,j] + "\t");
+                        Console.Write(arr[i,j].PadRight(14));
                     }
-                    else Console.Write(arr_display[i,j]  + "\t");
+                    else Console.Write(arr_display[i,j].PadRight(14));
                 }
                 Console.Write(Environment.NewLine);
             }
@@ -151,7 +153,7 @@ class Game
                     arr_display[numc2.Item1, numc2.Item2] = arr[numc1.Item1, numc1.Item2];
                     Thread.Sleep(2000);
                 }
-            else {Thread.Sleep(5000);}
+            else {Thread.Sleep(4000);}
             Console.Clear();
         }
 
