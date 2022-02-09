@@ -9,13 +9,15 @@ namespace MemoryGame
 class Game
 {
     List<string> wordbase;
+    public List<string[]> ScoreTable;
     public Game(List<string> _wordbase){wordbase=_wordbase;}
     public void playGame(int numWords, int numTries)
     {
         int numRows=numWords/2;
         string[,] board = new string[numRows,4], board_display = new string[numRows,4];
         Populate(board, wordbase);
-        SetUp(board_display);
+        SetUp(board_display);              
+        HiScore hiscore = new HiScore(ScoreTable);
         Stopwatch timer = new Stopwatch();
         timer.Start();
         for(int i=0;i<numTries;i++)
@@ -25,10 +27,16 @@ class Game
             if(BComplete(board_display))
             {
                 timer.Stop();
+                long time = timer.ElapsedMilliseconds/1000;
                 PrintBoard(board_display, 15-i);
-                Console.WriteLine("Congratulations! You won! It took you {0} tries and the time elapsed is {1} seconds.",(i+1),(timer.ElapsedMilliseconds/1000));
+                Console.WriteLine("Congratulations! You won! It took you {0} tries and the time elapsed is {1} seconds.",(i+1),time);
+                Console.Clear();
+                string[] score = new string[4];
+                score[1] = DateTime.Now.ToString("dd/MM/yyyy");
+                score[2] = (i+1).ToString();
+                score[3] = time.ToString();   
+                hiscore.HiScoreCheck(numWords, ScoreTable, score);     
                 break;
-                //check for high score, update table if necessary - HiScoreCheck() in Hiscore.cs
             }
 
         }
@@ -36,7 +44,11 @@ class Game
         {
             Console.WriteLine("Unfortunately, you didn't make it this time.");
         }
-        //HiScoreTable()
+        Console.WriteLine("Here is the current high score table:");
+        Console.WriteLine(Environment.NewLine);
+        hiscore.HiScoreDisplay(numWords, ScoreTable);
+        Console.WriteLine("Press any key to close the table.");
+        Console.ReadKey();
     }
      void Populate(string[,] arr, List<string> wordbase)
         {   
@@ -75,10 +87,10 @@ class Game
                 }
             }
         void PrintBoard(string[,] arr_display, int x)
-        {   
-            string pad = new String(' ', 13);
+        {    
             //we'll use it before the Uncover function to print current state of board
             //let's try and space the words out neatly - longest word in our base is 13 chars long
+            string pad = new String(' ', 13);
             Console.WriteLine( " " + x + " tries left");
             Console.WriteLine(" \t1" + pad + "2" + pad + "3" + pad + "4");
             for(int i=0; i<arr_display.GetLength(0); i++)
