@@ -34,28 +34,43 @@ namespace MemoryGame
 
     static void Main(string[] args)
     {
+      Console.SetWindowSize(80, 40);
       // 1)load word base from file, has to still work after repository is downloaded elsewhere
       string path = Directory.GetCurrentDirectory() + @"\Words.txt";
       List<string> WordBase = File.ReadAllLines(path).ToList();
-      Console.WriteLine("Welcome to my little memory game!");      
+      Console.SetCursorPosition(23,20);
+      Console.WriteLine("Welcome to my little memory game!" + Environment.NewLine);  
+      //Console.SetCursorPosition(0, Console.CursorTop - 1
+      Console.SetCursorPosition(29,Console.CursorTop);
+      Console.WriteLine("Press any key to start");
+      Console.SetCursorPosition(40,Console.CursorTop);
+      Console.ReadKey();    
        while (true)
        {
          Playthrough playthrough = new Playthrough(WordBase);
          playthrough.SinglePlaythrough(WordBase);
-         Console.WriteLine("Would you like to play again? (Y/N) + Enter");
-         string Decision = Console.ReadLine();
+         Console.SetCursorPosition(23,20);
+         Console.WriteLine("Would you like to play again? (Y/N)");
+         Console.SetCursorPosition(40,Console.CursorTop);
+         ConsoleKeyInfo pressed = Console.ReadKey();
+         string Decision = pressed.KeyChar.ToString();
          while(Decision != "n" && Decision != "N" && Decision != "y" && Decision != "Y")
          {
-           Console.WriteLine("Not a valid answer, please use Y or N key and press Enter");
-           Decision = Console.ReadLine();
+           Console.Clear();
+           Console.SetCursorPosition(20,20);
+           Console.WriteLine("Not a valid answer, please press Y or N.");
+           Console.SetCursorPosition(40,Console.CursorTop);
+           pressed = Console.ReadKey();
+          Decision = pressed.KeyChar.ToString();
          }
+         Console.Clear();
          if(Decision == "n" || Decision == "N")
          {
+           Console.SetCursorPosition(17,20);
            Console.WriteLine("Thank you for playing, see you again sometime!");
            Thread.Sleep(5000);
            break;
          }
-         Console.Clear();
        }
     }
   }
